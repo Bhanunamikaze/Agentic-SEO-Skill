@@ -1,6 +1,12 @@
-# 🚀 Antigravity SEO Skill
+# 🚀 SEO Skill (Antigravity / Claude / Codex)
 
-An LLM-first SEO analysis skill for Antigravity IDE, with 12 specialized sub-skills, 6 specialist agents, and optional utility scripts used as evidence collectors.
+An LLM-first SEO analysis skill for agent IDEs, with 12 specialized sub-skills, 6 specialist agents, and optional utility scripts used as evidence collectors.
+
+## ✅ IDE Compatibility
+
+- Antigravity IDE (`.agent/skills/seo`)
+- Claude Code (`~/.claude/skills/seo`)
+- Codex (`~/.codex/skills/seo`)
 
 
 ## ✨ Features
@@ -66,12 +72,53 @@ Pre-built strategy templates for: **SaaS**, **E-commerce**, **Local Business**, 
 
 ---
 
-## 🔧 Installation — Antigravity IDE
+## 🔧 Installation (All IDEs)
+
+### Quick Install Script (Antigravity / Claude / Codex)
+
+```bash
+# 1) Clone
+git clone https://github.com/Bhanunamikaze/Agentic-SEO-Skill.git
+cd Agentic-SEO-Skill
+
+# 2) Install for your target
+# Antigravity (project-local):
+bash install.sh --target antigravity --project-dir /path/to/your/project
+
+# Claude:
+bash install.sh --target claude
+
+# Codex:
+bash install.sh --target codex
+
+# Global user install (Claude + Codex):
+bash install.sh --target global
+
+# All targets (Antigravity + Claude + Codex):
+bash install.sh --target all --project-dir /path/to/your/project
+
+# Install from another local checkout:
+bash install.sh --target codex --repo-path /path/to/Agentic-SEO-Skill
+```
+
+Or install directly from GitHub (remote source mode):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | \
+  bash -s -- --target codex
+```
+
+Use a different repository URL (for forks or repo rename):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | \
+  bash -s -- --target codex --source remote --repo-url https://github.com/<you>/Agentic-SEO-Skill.git
+```
 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/bhanunamikaze/Antigravity-SEO-Skill.git
+git clone https://github.com/Bhanunamikaze/Agentic-SEO-Skill.git
 ```
 
 ### Step 2: Install Python Dependencies
@@ -85,26 +132,37 @@ pip install requests beautifulsoup4
 pip install playwright && playwright install chromium
 ```
 
-### Step 3: Add to Antigravity IDE
+### Step 3: Choose Target Directory (Manual Install)
 
-Place the `seo-skill/` directory inside your project's `.agent/skills/` directory:
+If you prefer not to use `install.sh`, copy or symlink manually:
+
+#### Antigravity IDE (project-local)
 
 ```bash
-# From your project root
 mkdir -p .agent/skills
-cp -r /path/to/Antigravity-SEO-Skill/seo-skill .agent/skills/seo
+cp -r /path/to/Agentic-SEO-Skill .agent/skills/seo
+# or: ln -s /path/to/Agentic-SEO-Skill .agent/skills/seo
 ```
 
-Alternatively, you can symlink it:
+#### Claude Code (user-global)
 
 ```bash
-mkdir -p .agent/skills
-ln -s /path/to/Antigravity-SEO-Skill/seo-skill .agent/skills/seo
+mkdir -p ~/.claude/skills
+cp -r /path/to/Agentic-SEO-Skill ~/.claude/skills/seo
+# or: ln -s /path/to/Agentic-SEO-Skill ~/.claude/skills/seo
+```
+
+#### Codex (user-global)
+
+```bash
+mkdir -p ~/.codex/skills
+cp -r /path/to/Agentic-SEO-Skill ~/.codex/skills/seo
+# or: ln -s /path/to/Agentic-SEO-Skill ~/.codex/skills/seo
 ```
 
 ### Step 4: Verify Triggering
 
-The skill will auto-trigger when you mention SEO-related keywords in the Antigravity IDE. Try:
+The skill will auto-trigger when you mention SEO-related keywords in your IDE. Try:
 
 - *"Run an SEO audit on example.com"*
 - *"Check the schema markup on my homepage"*
@@ -115,7 +173,7 @@ The skill will auto-trigger when you mention SEO-related keywords in the Antigra
 
 ## 💬 Example Prompts (hackingdream.net)
 
-Use these directly in Antigravity IDE:
+Use these directly in Antigravity, Claude, or Codex:
 
 ```text
 Run a full SEO audit for https://hackingdream.net and prioritize fixes by impact.
@@ -157,7 +215,7 @@ Create a 6-month SEO strategy for https://hackingdream.net with milestones and K
 Analyze https://hackingdream.net as an article/homepage content target and propose before/after copy improvements.
 ```
 
-Example run + output artifacts in Antigravity IDE:
+Example run + output artifacts in an IDE session:
 
 - Prompt: `perform SEO analysis on hackingdream.net`
 - Generated outputs: `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md`
@@ -170,7 +228,7 @@ Example run + output artifacts in Antigravity IDE:
 
 You can generate reports in two ways:
 
-1. **LLM-first report in Antigravity IDE** (recommended for strategy + prioritization):
+1. **LLM-first report in your IDE (Antigravity / Claude / Codex)** (recommended for strategy + prioritization):
 
 ```text
 Run a full SEO audit for https://hackingdream.net and produce a prioritized action plan with evidence for each finding.
@@ -270,7 +328,7 @@ python3 -m py_compile scripts/*.py
 
 This project is heavily built from **[claude-seo](https://github.com/AgriciDaniel/claude-seo)** by **[AgriciDaniel](https://github.com/AgriciDaniel)**. All core SEO logic, reference data, agent definitions, utility scripts, and sub-skill instructions originate from that project.
 
-This repository restructures and adapts the content to function as a native **Antigravity IDE** skill, preserving the full feature set while conforming to the Antigravity skill format (`SKILL.md` + `scripts/` + `resources/`).
+This repository restructures and adapts the content to function as a compatible skill package for **Antigravity IDE**, **Claude Code**, and **Codex**, while preserving the same core skill layout (`SKILL.md` + `scripts/` + `resources/`).
 
 ---
 

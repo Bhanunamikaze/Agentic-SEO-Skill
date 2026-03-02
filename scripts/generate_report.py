@@ -1342,6 +1342,10 @@ def main():
         domain = urlparse(args.url).netloc.replace(".", "_")
         output_path = f"seo-report-{domain}.html"
 
+    output_dir = os.path.dirname(output_path)
+    if output_dir:
+        os.makedirs(output_dir, exist_ok=True)
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
 
