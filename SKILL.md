@@ -18,8 +18,11 @@ LLM-first SEO analysis skill with 12 specialized sub-skills and 6 specialist age
 For prompt reliability in Codex/agent IDEs, map common user wording to a fixed workflow:
 
 - If user says `perform seo analysis on <url>` (or similar generic SEO request with a URL), treat it as a **single-URL full audit**.
-- If no explicit sub-skill is specified, run the full audit path and generate an HTML report with `scripts/generate_report.py`.
-- Always return the saved report path and a prioritized fix list.
+- If no explicit sub-skill is specified, run the full/page audit path with **LLM-first reasoning** and script-backed evidence.
+- For full/page audits, always produce:
+  - `FULL-AUDIT-REPORT.md` (detailed findings)
+  - `ACTION-PLAN.md` (prioritized fixes)
+- If `generate_report.py` is run, also return the saved HTML path (for example `SEO-REPORT.html`).
 
 ## Available Commands
 
@@ -53,25 +56,25 @@ Parse the user's request to determine which sub-skill(s) to activate:
 - **Single page**: Read `resources/skills/seo-page.md` — deep dive on one URL
 - **Specific area**: Read the matching `resources/skills/seo-*.md` file
 - **Strategic plan**: Read `resources/skills/seo-plan.md` and the matching `resources/templates/*.md` for the detected industry
-- **Generic `perform seo analysis on <url>` request**: treat as single-page full audit and run `scripts/generate_report.py` first.
+- **Generic `perform seo analysis on <url>` request**: treat as single-page full audit, read `resources/skills/seo-page.md`, and generate `FULL-AUDIT-REPORT.md` + `ACTION-PLAN.md`.
 
 ### Step 2 — Collect Evidence
 
-**Primary method for reliable audits** — use bundled scripts first:
-```bash
-# Create deterministic evidence artifact
-python3 <SKILL_DIR>/scripts/generate_report.py <url> --output /tmp/seo-report.html
-
-# If needed, fetch/parse raw HTML for extra checks
-python3 <SKILL_DIR>/scripts/fetch_page.py <url> --output /tmp/page.html
-python3 <SKILL_DIR>/scripts/parse_html.py /tmp/page.html --url <url> --json
-```
-
-**Secondary method** — use `read_url_content` when script execution is unavailable:
+**Primary method (LLM-first)** — use the built-in `read_url_content` tool first:
 ```
 read_url_content(url)  →  returns parsed HTML content directly
 ```
-Use this only as fallback evidence.
+Use this as the baseline evidence for reasoning.
+
+**Deterministic verification (recommended when script execution is available)**:
+```bash
+# Fetch/parse raw HTML for structured checks
+python3 <SKILL_DIR>/scripts/fetch_page.py <url> --output /tmp/page.html
+python3 <SKILL_DIR>/scripts/parse_html.py /tmp/page.html --url <url> --json
+
+# Optional: generate shareable HTML dashboard artifact
+python3 <SKILL_DIR>/scripts/generate_report.py <url> --output SEO-REPORT.html
+```
 
 > **Do not use third-party mirrors (e.g., `r.jina.ai`) as primary evidence when direct site fetch or bundled scripts are available.**
 > `<SKILL_DIR>` = absolute path to this skill directory (the folder containing this SKILL.md).
@@ -91,7 +94,7 @@ Use the LLM as the primary SEO analyst:
 
 Always read and apply `resources/references/llm-audit-rubric.md` to keep scoring, severity, confidence, and output structure consistent across audit types.
 
-### Step 4 — Run Baseline Verification Scripts (Required for full/page audits)
+### Step 4 — Run Baseline Verification Scripts (When execution is available)
 
 For full/page audits, run baseline checks to avoid hypothesis-only reporting. Do not replace LLM reasoning with script-only scoring.
 
@@ -131,6 +134,8 @@ If a check fails due network, DNS, permissions, or API rate limits:
 - Report it explicitly as an **environment limitation**, not a confirmed site issue.
 - Keep confidence as `Hypothesis` for impacted categories.
 - Continue with available evidence instead of stopping the audit.
+- Do not enter repeated fallback loops. Retry a failed source at most once, then finalize the audit.
+- Do not pivot into repeated web-search scraping loops for the same URL.
 
 **Visual analysis** (requires Playwright — use `conda activate pentest` if available):
 ```bash
@@ -187,6 +192,16 @@ Use numeric scores as guidance, not as a replacement for evidence quality and ju
 | AI Search Readiness (GEO) | 10% |
 
 > If using `scripts/generate_report.py`, the automated dashboard uses script-level category weights defined in that script. Keep the narrative audit LLM-first and evidence-first.
+
+### Step 8 — Mandatory Deliverables
+
+For `seo audit`, `seo page`, and generic `perform seo analysis on <url>` flows:
+
+1. Create `FULL-AUDIT-REPORT.md` in the current working directory at the start of the audit, then update it as evidence is collected.
+2. Create `ACTION-PLAN.md` in the current working directory at the start of the audit, then update it with prioritized fixes.
+3. If HTML dashboard was generated, include its exact saved path (for example `SEO-REPORT.html` or an absolute path).
+4. In the final response, explicitly list generated artifacts and paths.
+5. If technical checks are blocked by environment limits, still write both markdown files and include an "Environment Limitations" section.
 
 #### Score Interpretation
 | Score | Rating |
@@ -274,7 +289,10 @@ Structure reports as:
 6. **Mobile-first is complete** — 100% mobile-first indexing since July 5, 2024.
 7. **Location page limits** — Warning at 30+ pages, hard stop at 50+ pages. Enforce unique content requirements.
 8. **AI crawler management** — Check robots.txt for GPTBot, ClaudeBot, PerplexityBot, Applebot-Extended, Google-Extended, Bytespider, CCBot.
-9. **Use script-based evidence first for audits** — Prefer bundled scripts (`generate_report.py`, `fetch_page.py`, `parse_html.py`) for deterministic results. Use `read_url_content` as fallback.
+9. **Use `read_url_content` first** — Keep analysis LLM-first, then verify with scripts (`fetch_page.py`, `parse_html.py`, and targeted checks) when available.
+10. **Always produce file artifacts for audit flows** — `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md` are required outputs for full/page audit requests.
+11. **Bound evidence retries** — Avoid long search/retry loops. If core checks fail due DNS/network, finalize promptly with confidence labels and file outputs.
+12. **Avoid redundant web fallbacks** — If direct fetch/scripts fail and one fallback also fails, stop retrying and finish the report with explicit limitations.
 
 ---
 

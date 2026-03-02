@@ -41,6 +41,7 @@ Delay between requests: 1 second
 
 - `FULL-AUDIT-REPORT.md` — Comprehensive findings
 - `ACTION-PLAN.md` — Prioritized recommendations (Critical → High → Medium → Low)
+- `SEO-REPORT.html` — Optional interactive dashboard path (when `generate_report.py` is executed)
 - `screenshots/` — Desktop + mobile captures (if Playwright available)
 
 ## Scoring Weights
