@@ -1,8 +1,8 @@
-# 🚀 SEO Skill (Antigravity / Claude / Codex)
+# SEO Skill (Antigravity / Claude / Codex)
 
 An LLM-first SEO analysis skill for agent IDEs, with 12 specialized sub-skills, 6 specialist agents, and optional utility scripts used as evidence collectors.
 
-## ✅ IDE Compatibility
+## IDE Compatibility
 
 - Antigravity IDE (`.agent/skills/seo`)
 - Claude Code (`~/.claude/skills/seo`)
@@ -101,19 +101,14 @@ bash install.sh --target all --project-dir /path/to/your/project
 bash install.sh --target codex --repo-path /path/to/Agentic-SEO-Skill
 ```
 
-Or install directly from GitHub (remote source mode):
+### Install directly from GitHub (remote source mode):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | \
   bash -s -- --target codex
 ```
 
-Use a different repository URL (for forks or repo rename):
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Bhanunamikaze/Agentic-SEO-Skill/main/install.sh | \
-  bash -s -- --target codex --source remote --repo-url https://github.com/<you>/Agentic-SEO-Skill.git
-```
+### Manual Installation
 
 ### Step 1: Clone the Repository
 
@@ -285,18 +280,6 @@ Generate a single HTML dashboard if needed:
 ```bash
 python3 scripts/generate_report.py "$URL"
 ```
-
----
-
-## 🧪 Local Validation
-
-From `seo-skill/`:
-
-```bash
-# Script syntax validation
-python3 -m py_compile scripts/*.py
-```
-
 ---
 
 ## 🛡️ Critical Rules Enforced

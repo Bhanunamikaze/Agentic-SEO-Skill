@@ -146,3 +146,50 @@ Google updated its JavaScript SEO documentation in December 2025 with critical c
 ### High Priority (fix within 1 week)
 ### Medium Priority (fix within 1 month)
 ### Low Priority (backlog)
+
+---
+
+## Voice Search Optimization
+
+Voice search (Google Assistant, Siri, Alexa, Cortana) selects answers primarily from **Featured Snippets** and requires specific optimization signals.
+
+### Key Facts
+- 90%+ of voice answers are read directly from Featured Snippets
+- 46% of voice searches have local intent
+- Voice results strongly favor pages with TTFB < 2s
+- 80%+ of voice queries come from mobile devices
+
+### Checklist
+
+| Check | Requirement | Pass Threshold |
+|-------|-------------|----------------|
+| Page speed | TTFB < 2s (critical — voice results heavily favor fast pages) | < 2000ms |
+| HTTPS | Required for voice results | Must be HTTPS |
+| Featured Snippet | Direct answer in first 40-55 words after H-tag | Present |
+| FAQ phrasing | H2/H3 phrased as natural language questions | ≥ 3 question H-tags |
+| Local schema | LocalBusiness with address, phone, hours (local intent queries) | If local business |
+| `speakable` schema | Marks top answer paragraphs for Google Assistant | Recommended |
+| Mobile accessibility | 100% accessible on mobile | Required |
+
+### `speakable` Schema Implementation
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": [".article-summary", "h2 + p", "[itemprop='description']"]
+  }
+}
+```
+
+### Voice Search by Platform
+
+| Platform | Index Source | Primary Optimization |
+|----------|-------------|---------------------|
+| **Google Assistant** | Google index | Featured Snippet ownership, TTFB < 2s, `speakable` |
+| **Siri** | Bing (Apple) | Bing Webmaster Tools submission, Featured Snippet on Bing |
+| **Alexa** | Bing | Featured Snippet, Bing indexed content |
+| **Cortana** | Bing | Featured Snippet, Bing Webmaster Tools |
+
+> **Note**: For Siri and Alexa, submit your site via **Bing Webmaster Tools** (separate from Google Search Console). Bing still powers major voice engines.

@@ -46,14 +46,16 @@ Delay between requests: 1 second
 
 ## Scoring Weights
 
+> **Source of truth**: `SKILL.md` Step 7. Update weights there first, then mirror here.
+
 | Category | Weight |
 |----------|--------|
 | Technical SEO | 25% |
-| Content Quality | 25% |
-| On-Page SEO | 20% |
-| Schema / Structured Data | 10% |
+| Content Quality | 20% |
+| On-Page SEO | 15% |
+| Schema / Structured Data | 15% |
 | Performance (CWV) | 10% |
-| Images | 5% |
+| Images | 10% |
 | AI Search Readiness | 5% |
 
 ## Report Structure

@@ -41,6 +41,8 @@ For prompt reliability in Codex/agent IDEs, map common user wording to a fixed w
 | `seo hreflang <url>` | [seo-hreflang](resources/skills/seo-hreflang.md) | International SEO validation |
 | `seo plan <url>` | [seo-plan](resources/skills/seo-plan.md) | Strategic SEO planning |
 | `seo article <url>` | [seo-article](resources/skills/seo-article.md) | Article data extraction & LLM optimization |
+| `seo links <url>` | [seo-links](resources/skills/seo-links.md) | External backlink profile & link health |
+| `seo aeo <url>` | [seo-aeo](resources/skills/seo-aeo.md) | Answer Engine Optimization (Featured Snippets, PAA, Knowledge Panel) |
 
 ---
 
@@ -182,14 +184,19 @@ Reference the quality standards in `resources/references/`:
 Use numeric scores as guidance, not as a replacement for evidence quality and judgment.
 
 #### Default Scoring Weights (Full Audit)
+
+> **Canonical source of truth** — These weights are defined here and in `resources/skills/seo-audit.md`.
+> Do not modify weights in individual sub-skill files; update only these two locations to keep scores consistent.
+
 | Category | Weight |
 |----------|--------|
 | Technical SEO | 25% |
-| Content Quality | 25% |
-| Schema Markup | 15% |
-| Performance (CWV) | 15% |
+| Content Quality | 20% |
+| On-Page SEO | 15% |
+| Schema / Structured Data | 15% |
+| Performance (CWV) | 10% |
 | Image Optimization | 10% |
-| AI Search Readiness (GEO) | 10% |
+| AI Search Readiness (GEO) | 5% |
 
 > If using `scripts/generate_report.py`, the automated dashboard uses script-level category weights defined in that script. Keep the narrative audit LLM-first and evidence-first.
 
