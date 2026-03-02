@@ -1,0 +1,49 @@
+name: Package On Tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare metadata
+        run: |
+          REPO_NAME="${GITHUB_REPOSITORY##*/}"
+          TAG="${GITHUB_REF_NAME}"
+          PKG_NAME="${REPO_NAME}-${TAG}"
+          echo "REPO_NAME=${REPO_NAME}" >> "${GITHUB_ENV}"
+          echo "TAG=${TAG}" >> "${GITHUB_ENV}"
+          echo "PKG_NAME=${PKG_NAME}" >> "${GITHUB_ENV}"
+
+      - name: Build package
+        run: |
+          mkdir -p dist
+          zip -r "dist/${PKG_NAME}.zip" . \
+            -x ".git/*" \
+            -x "__pycache__/*" \
+            -x "scripts/__pycache__/*" \
+            -x "*.pyc" \
+            -x "smoke-screenshots-hackingdream/*" \
+            -x "seo-report-*.html"
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG_NAME }}
+          path: dist/${{ env.PKG_NAME }}.zip
+
+      - name: Publish release asset
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.REPO_NAME }} ${{ env.TAG }}
+          generate_release_notes: true
+          files: dist/${{ env.PKG_NAME }}.zip

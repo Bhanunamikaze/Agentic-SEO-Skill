@@ -157,6 +157,13 @@ Create a 6-month SEO strategy for https://hackingdream.net with milestones and K
 Analyze https://hackingdream.net as an article/homepage content target and propose before/after copy improvements.
 ```
 
+Example run + output artifacts in Antigravity IDE:
+
+- Prompt: `perform SEO analysis on hackingdream.net`
+- Generated outputs: `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md`
+
+![Example prompt and generated outputs](docs/images/example-prompt-output.png)
+
 ---
 
 ## 📊 Report Generation
@@ -181,6 +188,10 @@ The HTML report includes:
 - environment-specific fix plan
 - section-level issues and recommendations
 - readability "what to replace" suggestions
+
+Example generated dashboard:
+
+![SEO report dashboard example](docs/images/report-dashboard.png)
 
 ---
 
