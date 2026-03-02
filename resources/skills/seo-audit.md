@@ -13,16 +13,16 @@ Apply `resources/references/llm-audit-rubric.md` for evidence standards, confide
 
 ## Process
 
-1. **Fetch homepage** — use `scripts/fetch_page.py` to retrieve HTML
+1. **Read page with LLM** — use `read_url_content` to read the page and begin analysis using SEO best practices.
 2. **Detect business type** — analyze homepage signals per seo orchestrator
-3. **Crawl site** — follow internal links up to 500 pages, respect robots.txt
-4. **Delegate to subagents** (if available, otherwise run inline sequentially):
+3. **Run scripts for evidence** — Always attempt to run relevant scripts for structured data collection. Scripts provide precise, machine-readable evidence that strengthens the analysis:
    - `seo-technical` — robots.txt, sitemaps, canonicals, Core Web Vitals, security headers
    - `seo-content` — E-E-A-T, readability, thin content, AI citation readiness
    - `seo-schema` — detection, validation, generation recommendations
    - `seo-sitemap` — structure analysis, quality gates, missing pages
    - `seo-performance` — LCP, INP, CLS measurements
    - `seo-visual` — screenshots, mobile testing, above-fold analysis
+4. **LLM analysis** — Apply `llm-audit-rubric.md`, score each category using chain-of-thought. Combine LLM reasoning with script evidence. If a script failed, the LLM still covers that area using its own analysis (confidence: `Likely` instead of `Confirmed`).
 5. **Score** — aggregate into SEO Health Score (0-100)
 6. **Report** — generate prioritized action plan
 

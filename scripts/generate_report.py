@@ -353,6 +353,11 @@ def collect_data(url: str) -> dict:
         ("broken_links", "broken_links.py", [url, "--workers", "5", "--timeout", "8"]),
         ("internal_links", "internal_links.py", [url, "--depth", "1", "--max-pages", "15"]),
         ("pagespeed", "pagespeed.py", [url, "--strategy", "mobile"]),
+        # New analysis scripts (supplementary — failures don't block report)
+        ("entity", "entity_checker.py", [url]),
+        ("link_profile", "link_profile.py", [url, "--max-pages", "20"]),
+        ("hreflang", "hreflang_checker.py", [url]),
+        ("duplicate_content", "duplicate_content.py", [url]),
     ]
 
     # Add parse_html and readability if page was fetched
@@ -383,16 +388,20 @@ def calculate_overall_score(data: dict) -> dict:
     """Calculate overall SEO score from all analyses."""
     scores = {}
     weights = {
-        "security": 10,
-        "social": 10,
-        "robots": 10,
-        "broken_links": 15,
-        "internal_links": 10,
-        "redirects": 5,
+        "security": 8,
+        "social": 5,
+        "robots": 8,
+        "broken_links": 10,
+        "internal_links": 8,
+        "redirects": 3,
         "llms_txt": 5,
-        "pagespeed": 15,
+        "pagespeed": 13,
         "onpage": 10,
-        "readability": 10,
+        "readability": 8,
+        "entity": 5,
+        "link_profile": 7,
+        "hreflang": 5,
+        "duplicate_content": 5,
     }
 
     # Security score
@@ -478,6 +487,60 @@ def calculate_overall_score(data: dict) -> dict:
     else:
         scores["readability"] = max(0, int(flesch * (50 / 30)))
 
+    # Entity SEO score
+    ent = data["sections"].get("entity", {})
+    if ent and not ent.get("error"):
+        sameas = ent.get("sameas_analysis", {})
+        found = sameas.get("total_found", 0)
+        missing = sameas.get("total_missing_critical", 4)
+        has_wikidata = 1 if ent.get("wikidata", {}).get("found") else 0
+        has_wikipedia = 1 if ent.get("wikipedia", {}).get("found") else 0
+        ent_score = min(100, found * 15 + has_wikidata * 25 + has_wikipedia * 25)
+        issues_count = len(ent.get("issues", []))
+        ent_score = max(0, ent_score - issues_count * 10)
+        scores["entity"] = ent_score
+    else:
+        scores["entity"] = 0
+
+    # Link profile score
+    lp = data["sections"].get("link_profile", {})
+    if lp and not lp.get("error"):
+        avg_links = lp.get("avg_internal_links_per_page", 0)
+        orphans = lp.get("orphan_pages", {}).get("count", 0)
+        dead_ends = lp.get("dead_end_pages", {}).get("count", 0)
+        lp_score = 70
+        if avg_links >= 5: lp_score += 15
+        elif avg_links >= 3: lp_score += 5
+        else: lp_score -= 15
+        lp_score -= min(30, orphans * 5)
+        lp_score -= min(20, dead_ends * 3)
+        scores["link_profile"] = max(0, min(100, lp_score))
+    else:
+        scores["link_profile"] = 0
+
+    # Hreflang score (skip weight if not applicable)
+    hf = data["sections"].get("hreflang", {})
+    if hf and not hf.get("error"):
+        if hf.get("hreflang_tags_found", 0) > 0:
+            summary = hf.get("summary", {})
+            hf_score = 100 - summary.get("critical", 0) * 30 - summary.get("high", 0) * 15 - summary.get("medium", 0) * 5
+            scores["hreflang"] = max(0, min(100, hf_score))
+        else:
+            # No hreflang = single language site, skip from weighting
+            scores["hreflang"] = None
+    else:
+        scores["hreflang"] = None
+
+    # Duplicate content score
+    dc = data["sections"].get("duplicate_content", {})
+    if dc and not dc.get("error"):
+        dupes = len(dc.get("near_duplicates", []))
+        thin = len(dc.get("thin_pages", []))
+        dc_score = 100 - dupes * 20 - thin * 10
+        scores["duplicate_content"] = max(0, min(100, dc_score))
+    else:
+        scores["duplicate_content"] = 0
+
     # Weighted average (only scored categories)
     total_weight = 0
     weighted_sum = 0
@@ -561,7 +624,9 @@ def render_all_recommendations(data: dict) -> str:
         "broken_links": "🔗 Links", "internal_links": "🕸️ Internal Links",
         "redirects": "↪️ Redirects", "llms_txt": "🧠 AI Search",
         "pagespeed": "⚡ Performance", "onpage": "📝 On-Page", "readability": "📖 Readability",
-        "article": "📄 Article SEO",
+        "article": "📄 Article SEO", "entity": "🏛️ Entity SEO",
+        "link_profile": "🔗 Link Profile", "hreflang": "🌍 Hreflang",
+        "duplicate_content": "📋 Content Uniqueness",
     }
     html = ""
     env_fixes = data.get("environment_fixes", [])
@@ -641,6 +706,10 @@ def generate_html(data: dict, scores: dict) -> str:
     op = data["sections"].get("onpage", {})
     rd = data["sections"].get("readability", {})
     art = data["sections"].get("article", {})
+    ent = data["sections"].get("entity", {})
+    lp = data["sections"].get("link_profile", {})
+    hf = data["sections"].get("hreflang", {})
+    dc = data["sections"].get("duplicate_content", {})
     env = data.get("environment", {})
     env_fixes = data.get("environment_fixes", [])
 
@@ -673,6 +742,10 @@ def generate_html(data: dict, scores: dict) -> str:
         "onpage": ("📝", "On-Page SEO"),
         "readability": ("📖", "Readability"),
         "article": ("📄", "Article Extractor"),
+        "entity": ("🏛️", "Entity SEO"),
+        "link_profile": ("🔗", "Link Profile"),
+        "hreflang": ("🌍", "Hreflang"),
+        "duplicate_content": ("📋", "Content Uniqueness"),
     }
 
     category_cards = ""
@@ -1257,6 +1330,71 @@ tr:hover td {{ background: rgba(99,102,241,0.03); }}
                 </tbody>
             </table>
             {render_recommendations(art)}
+        </div>
+    </div>
+
+    <!-- Entity SEO -->
+    <div class="section" id="section-entity">
+        <div class="section-header" onclick="toggleSection('entity')">
+            <h2>🏛️ Entity SEO <span class="badge {"pass" if scores["categories"].get("entity",0) >= 50 else "warning" if scores["categories"].get("entity",0) >= 20 else "critical"}">{scores["categories"].get("entity",0)}/100</span></h2>
+            <span class="chevron" id="chevron-entity">▼</span>
+        </div>
+        <div class="section-body" id="body-entity">
+            <div class="summary-row">
+                <div class="summary-item"><div class="val">{'✅' if ent.get('wikidata', {}).get('found') else '❌'}</div><div class="lbl">Wikidata</div></div>
+                <div class="summary-item"><div class="val">{'✅' if ent.get('wikipedia', {}).get('found') else '❌'}</div><div class="lbl">Wikipedia</div></div>
+                <div class="summary-item"><div class="val">{ent.get('sameas_analysis', {}).get('total_found', 0)}</div><div class="lbl">sameAs Links</div></div>
+                <div class="summary-item"><div class="val">{len(ent.get('issues', []))}</div><div class="lbl">Issues</div></div>
+            </div>
+            {render_recommendations(ent)}
+        </div>
+    </div>
+
+    <!-- Link Profile -->
+    <div class="section" id="section-link_profile">
+        <div class="section-header" onclick="toggleSection('link_profile')">
+            <h2>🔗 Link Profile <span class="badge {"pass" if scores["categories"].get("link_profile",0) >= 70 else "warning" if scores["categories"].get("link_profile",0) >= 40 else "critical"}">{scores["categories"].get("link_profile",0)}/100</span></h2>
+            <span class="chevron" id="chevron-link_profile">▼</span>
+        </div>
+        <div class="section-body" id="body-link_profile">
+            <div class="summary-row">
+                <div class="summary-item"><div class="val">{lp.get('pages_crawled', '?')}</div><div class="lbl">Pages Crawled</div></div>
+                <div class="summary-item"><div class="val">{lp.get('avg_internal_links_per_page', '?')}</div><div class="lbl">Avg Links/Page</div></div>
+                <div class="summary-item"><div class="val">{lp.get('orphan_pages', {}).get('count', 0)}</div><div class="lbl">Orphan Pages</div></div>
+                <div class="summary-item"><div class="val">{lp.get('dead_end_pages', {}).get('count', 0)}</div><div class="lbl">Dead Ends</div></div>
+            </div>
+            {render_recommendations(lp)}
+        </div>
+    </div>
+
+    <!-- Hreflang -->
+    <div class="section" id="section-hreflang">
+        <div class="section-header" onclick="toggleSection('hreflang')">
+            <h2>🌍 Hreflang / International SEO <span class="badge {"pass" if hf.get('hreflang_tags_found', 0) > 0 else "info"}">{hf.get('hreflang_tags_found', 0)} tags</span></h2>
+            <span class="chevron" id="chevron-hreflang">▼</span>
+        </div>
+        <div class="section-body" id="body-hreflang">
+            <div class="summary-row">
+                <div class="summary-item"><div class="val">{hf.get('implementation_method', 'none')}</div><div class="lbl">Method</div></div>
+                <div class="summary-item"><div class="val">{hf.get('hreflang_tags_found', 0)}</div><div class="lbl">Tags Found</div></div>
+            </div>
+            {'<p style="color:var(--text-muted);margin-top:12px">No hreflang tags found — this is expected for single-language sites.</p>' if hf.get('hreflang_tags_found', 0) == 0 else render_recommendations(hf)}
+        </div>
+    </div>
+
+    <!-- Duplicate Content -->
+    <div class="section" id="section-duplicate_content">
+        <div class="section-header" onclick="toggleSection('duplicate_content')">
+            <h2>📋 Content Uniqueness <span class="badge {"pass" if len(dc.get('near_duplicates', [])) == 0 else "warning"}">{len(dc.get('near_duplicates', []))} dupes / {len(dc.get('thin_pages', []))} thin</span></h2>
+            <span class="chevron" id="chevron-duplicate_content">▼</span>
+        </div>
+        <div class="section-body" id="body-duplicate_content">
+            <div class="summary-row">
+                <div class="summary-item"><div class="val">{dc.get('pages_analyzed', '?')}</div><div class="lbl">Pages Analyzed</div></div>
+                <div class="summary-item"><div class="val">{len(dc.get('near_duplicates', []))}</div><div class="lbl">Near Duplicates</div></div>
+                <div class="summary-item"><div class="val">{len(dc.get('thin_pages', []))}</div><div class="lbl">Thin Pages</div></div>
+            </div>
+            {render_recommendations(dc)}
         </div>
     </div>
 
