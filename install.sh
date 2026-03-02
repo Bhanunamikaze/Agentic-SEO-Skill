@@ -195,7 +195,8 @@ fi
 require_cmd bash
 require_cmd python3
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="${BASH_SOURCE[0]-$0}"
+SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
 SRC_DIR=""
 SHOULD_CLONE=0
 
