@@ -1,22 +1,25 @@
 ---
 name: seo
 description: >
-  LLM-first SEO analysis and optimization for websites, blog posts, and
-  business pages. Performs full audits, single-page reviews, technical SEO
-  checks (crawlability, indexability, Core Web Vitals with INP), structured
-  data detection/validation/generation, content quality and E-E-A-T assessment,
-  sitemap and hreflang validation, image optimization, programmatic SEO
-  safeguards, competitor page strategy, and GEO optimization for AI Overviews,
-  ChatGPT, and Perplexity. Uses scripts as optional evidence collectors while
-  keeping reasoning, prioritization, and recommendations in the LLM. Trigger on
-  "SEO", "audit", "schema", "Core Web Vitals", "E-E-A-T", "technical SEO",
-  "page speed", "structured data", "hreflang", "programmatic SEO", "GEO", "AI
-  Overviews", "competitor pages", or "SEO plan".
+  Deterministic LLM-first SEO audits for websites and blog posts. Use this when
+  the user asks to "perform SEO analysis", "run SEO audit", "analyze SEO",
+  "check technical SEO", "review schema", "Core Web Vitals", "E-E-A-T",
+  "hreflang", "GEO", or similar SEO requests with a URL. For full/page audits,
+  run the bundled scripts for evidence and return prioritized, confidence-labeled
+  fixes.
 ---
 
-# SEO Skill — Antigravity IDE
+# SEO Skill (Agentic / Claude / Codex)
 
 LLM-first SEO analysis skill with 12 specialized sub-skills and 6 specialist agents for complete website and blog optimization.
+
+## Deterministic Trigger Mapping
+
+For prompt reliability in Codex/agent IDEs, map common user wording to a fixed workflow:
+
+- If user says `perform seo analysis on <url>` (or similar generic SEO request with a URL), treat it as a **single-URL full audit**.
+- If no explicit sub-skill is specified, run the full audit path and generate an HTML report with `scripts/generate_report.py`.
+- Always return the saved report path and a prioritized fix list.
 
 ## Available Commands
 
@@ -50,25 +53,27 @@ Parse the user's request to determine which sub-skill(s) to activate:
 - **Single page**: Read `resources/skills/seo-page.md` — deep dive on one URL
 - **Specific area**: Read the matching `resources/skills/seo-*.md` file
 - **Strategic plan**: Read `resources/skills/seo-plan.md` and the matching `resources/templates/*.md` for the detected industry
+- **Generic `perform seo analysis on <url>` request**: treat as single-page full audit and run `scripts/generate_report.py` first.
 
 ### Step 2 — Collect Evidence
 
-**Primary method** — use the built-in `read_url_content` tool:
-```
-read_url_content(url)  →  returns parsed HTML content directly
-```
-Use this as the default source of evidence.
-
-**Fallback** — use utility scripts only when you need raw HTML, headers, or structured JSON outputs:
+**Primary method for reliable audits** — use bundled scripts first:
 ```bash
-# Step 1: Fetch page HTML to a file
-python3 <SKILL_DIR>/scripts/fetch_page.py <url> --output /tmp/page.html
+# Create deterministic evidence artifact
+python3 <SKILL_DIR>/scripts/generate_report.py <url> --output /tmp/seo-report.html
 
-# Step 2: Parse the saved HTML for SEO data
+# If needed, fetch/parse raw HTML for extra checks
+python3 <SKILL_DIR>/scripts/fetch_page.py <url> --output /tmp/page.html
 python3 <SKILL_DIR>/scripts/parse_html.py /tmp/page.html --url <url> --json
 ```
 
-> **Note**: `parse_html.py` accepts a file path (not a URL). Fetch first, then parse.
+**Secondary method** — use `read_url_content` when script execution is unavailable:
+```
+read_url_content(url)  →  returns parsed HTML content directly
+```
+Use this only as fallback evidence.
+
+> **Do not use third-party mirrors (e.g., `r.jina.ai`) as primary evidence when direct site fetch or bundled scripts are available.**
 > `<SKILL_DIR>` = absolute path to this skill directory (the folder containing this SKILL.md).
 
 ### Step 3 — Perform LLM-First Analysis
@@ -86,9 +91,9 @@ Use the LLM as the primary SEO analyst:
 
 Always read and apply `resources/references/llm-audit-rubric.md` to keep scoring, severity, confidence, and output structure consistent across audit types.
 
-### Step 4 — Run Targeted Verification Scripts (Optional)
+### Step 4 — Run Baseline Verification Scripts (Required for full/page audits)
 
-Use scripts to validate uncertain findings or enrich evidence. Do not replace LLM reasoning with script-only scoring.
+For full/page audits, run baseline checks to avoid hypothesis-only reporting. Do not replace LLM reasoning with script-only scoring.
 
 ```bash
 # Check robots.txt and AI crawler management
@@ -121,6 +126,11 @@ python3 <SKILL_DIR>/scripts/internal_links.py <url> --depth 1 --max-pages 20
 # Extract article content and perform keyword research for LLM-driven optimization
 python3 <SKILL_DIR>/scripts/article_seo.py <url> --keyword "<optional_target_keyword>" --json
 ```
+
+If a check fails due network, DNS, permissions, or API rate limits:
+- Report it explicitly as an **environment limitation**, not a confirmed site issue.
+- Keep confidence as `Hypothesis` for impacted categories.
+- Continue with available evidence instead of stopping the audit.
 
 **Visual analysis** (requires Playwright — use `conda activate pentest` if available):
 ```bash
@@ -264,7 +274,7 @@ Structure reports as:
 6. **Mobile-first is complete** — 100% mobile-first indexing since July 5, 2024.
 7. **Location page limits** — Warning at 30+ pages, hard stop at 50+ pages. Enforce unique content requirements.
 8. **AI crawler management** — Check robots.txt for GPTBot, ClaudeBot, PerplexityBot, Applebot-Extended, Google-Extended, Bytespider, CCBot.
-9. **Use `read_url_content` first** — Prefer the built-in tool for primary evidence. Use scripts only to validate or enrich evidence.
+9. **Use script-based evidence first for audits** — Prefer bundled scripts (`generate_report.py`, `fetch_page.py`, `parse_html.py`) for deterministic results. Use `read_url_content` as fallback.
 
 ---
 
