@@ -79,3 +79,12 @@ Specific, actionable improvements with expected impact
 
 ### Schema Suggestions
 Ready-to-use JSON-LD code for detected opportunities
+
+## Execution Plan
+
+When invoked as an agent to analyze a specific URL, execute these steps:
+1. Run `scripts/parse_html.py "$URL" --json` to get title, meta, links, headings, alt text, and schema.
+2. Run `scripts/readability.py "$URL" --json` for text metrics and grade level.
+3. Run `scripts/pagespeed.py "$URL" --strategy mobile --json` for Core Web Vitals.
+4. If applicable, run `scripts/article_seo.py "$URL" --json` for a deeper dive on content scoring.
+5. Summarize all findings into the Page Score Card and Issues Found according to the evidence rules.

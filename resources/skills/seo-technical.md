@@ -193,3 +193,14 @@ Voice search (Google Assistant, Siri, Alexa, Cortana) selects answers primarily 
 | **Cortana** | Bing | Featured Snippet, Bing Webmaster Tools |
 
 > **Note**: For Siri and Alexa, submit your site via **Bing Webmaster Tools** (separate from Google Search Console). Bing still powers major voice engines.
+
+## Execution Plan
+
+When invoked as an agent, execute these steps:
+1. Run `scripts/robots_checker.py "$URL" --json` for crawlability and AI crawler rules.
+2. Run `scripts/security_headers.py "$URL" --json` for security posture.
+3. Run `scripts/redirect_checker.py "$URL" --json` to verify redirect chains.
+4. Run `scripts/pagespeed.py "$URL" --strategy mobile --json` for Core Web Vitals mapping.
+5. Run `scripts/hreflang_checker.py "$URL" --json` for international setup.
+6. Run `scripts/indexnow_checker.py "$URL" --key YOUR_KEY --json` if applicable.
+7. Synthesize all outputs into the Technical Score and Category Breakdown.

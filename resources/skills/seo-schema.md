@@ -149,3 +149,12 @@ When generating schema for a page:
 - Missing schema opportunities
 - Validation fixes needed
 - Generated code for implementation
+
+## Execution Plan
+
+When invoked as an agent, execute these steps:
+1. Parse the page HTML to extract JSON-LD using `scripts/parse_html.py "$URL" --json`.
+2. Extract the `structured_data` array from the output.
+3. Validate each schema object against rules in `resources/references/schema-types.md`.
+4. If modifying local files, optionally run `scripts/validate_schema.py file.html` as a pre-commit check.
+5. Provide the user with the validation results and new JSON-LD snippets.

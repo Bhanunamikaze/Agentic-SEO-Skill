@@ -102,3 +102,11 @@ description: >
 - `sitemap.xml` (or split files with index)
 - `STRUCTURE.md` — site architecture documentation
 - URL count and organization summary
+
+## Execution Plan
+
+When invoked as an agent, execute these steps:
+1. Find sitemaps using `scripts/robots_checker.py "$URL" --json` or by guessing standard paths (e.g. `/sitemap.xml`).
+2. Fetch the XML and validate its structure.
+3. Optionally run `scripts/broken_links.py "$SITEMAP_URL" --json` or fetch the URLs to verify they return 200 OK.
+4. Output the `VALIDATION-REPORT.md` and/or generate the corrected XML.

@@ -133,6 +133,15 @@ Optimize for AI search engines (ChatGPT, Perplexity, Google AI Overviews):
 **Generative Engine Optimization (GEO):**
 GEO is the emerging discipline of optimizing content specifically for AI-generated answers. Key GEO signals include: quotability (clear, concise extractable facts), attribution (source citations within your content), structure (well-organized heading hierarchy), and freshness (regularly updated data). Cross-reference the `seo-geo` skill for detailed GEO workflows.
 
+## Passage Indexing Optimization
+
+Google's Passage Indexing (active since 2021) ranks individual passages independently for specific long-tail queries. Optimize by:
+
+- Ensuring each major section (H2 or H3 block) is self-contained and answers one clear question
+- Keeping optimal passage length at 100-200 words per block
+- Using descriptive headings that provide context even if the passage is extracted
+- Front-loading the direct answer in the first 40-50 words of the passage
+
 ## Content Freshness
 
 - Publication date visible
