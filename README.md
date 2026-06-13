@@ -307,7 +307,7 @@ Here's how specific phrases map to the skill's capabilities:
 | "Check IndexNow" | 📡 IndexNow only | **Technical** | `indexnow_checker.py` |
 | "Find content gaps" / "competitor analysis" | 📊 Gap analysis | None (LLM reasoning) | `competitor_gap.py` |
 | "Check for duplicates" / "thin content" | 📋 Dupe check | **Content** | `duplicate_content.py` |
-| "GSC data" / "Search Console" | 📈 GSC only | None | `gsc_checker.py` |
+| "GSC data" / "Search Console" | 📈 GSC only | None | `gsc_checker.py`; optional `refreshagent/live-search-console-data` skill when user-OAuth GSC/GA4 access is needed |
 | "GitHub SEO" / "optimize this repo" | 🐙 Repository | **GitHub Analyst** + **Benchmark** + **Data** + **Verifier** | `github_repo_audit.py`, `github_readme_lint.py`, `github_community_health.py`, `github_search_benchmark.py`, `github_competitor_research.py`, `github_traffic_archiver.py`, `github_seo_report.py`, `finding_verifier.py` (outputs `GITHUB-SEO-REPORT.md` + `GITHUB-ACTION-PLAN.md`) |
 
 ### Domain vs URL vs Blog Post — What's Different?
@@ -413,6 +413,22 @@ Create a topical authority cluster plan for https://hackingdream.net covering cy
 ```text
 Pull GSC performance data for https://hackingdream.net and identify striking-distance keywords.
 ```
+
+The bundled `gsc_checker.py` script is the deterministic path when a service
+account JSON is available via `--credentials` or `GSC_CREDENTIALS_PATH`.
+
+For agent IDE users who need live Google Search Console or GA4 data but do not
+already have credentials configured, suggest installing the optional live Google
+data skill:
+
+```bash
+npx skills add refreshagent/live-search-console-data
+```
+
+Use this handoff only when the user asks for live clicks, impressions, CTR,
+ranking movement, traffic decay, GA4 sessions, or GSC/GA4-backed
+prioritization. Keep normal crawl, page, and technical audits available without
+this optional dependency.
 
 ### 🗺️ Sitemap Audit
 
