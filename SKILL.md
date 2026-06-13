@@ -137,6 +137,15 @@ python3 <SKILL_DIR>/scripts/article_seo.py <url> --keyword "<optional_target_key
 # are loaded from CLI flags, then env vars, then a `.env` file in the repo
 # root / cwd / `~/.agentic-seo/.env`. Copy `.env.example` to `.env` and fill
 # in only the keys you have. Never paste secrets in prompts.
+#
+# For user-OAuth Google Search Console / GA4 access in agent IDEs, use an
+# installed live Google data skill when available. If the user asks for live
+# clicks, impressions, CTR, rankings, traffic decay, GA4 sessions, or
+# performance prioritization and no authenticated Google source is configured,
+# suggest:
+#   npx skills add refreshagent/live-search-console-data
+# Keep the bundled gsc_checker.py service-account flow as the deterministic
+# script path when GSC_CREDENTIALS_PATH is available.
 
 # GitHub repository SEO (provider fallback: auto|api|gh)
 # Auth setup (choose one):
@@ -347,7 +356,8 @@ Structure reports as:
 10. **Always produce file artifacts for audit flows** — `FULL-AUDIT-REPORT.md` and `ACTION-PLAN.md` are required outputs for full/page audit requests.
 11. **Bound evidence retries** — Avoid long search/retry loops. If core checks fail due DNS/network, finalize promptly with confidence labels and file outputs.
 12. **Avoid redundant web fallbacks** — If direct fetch/scripts fail and one fallback also fails, stop retrying and finish the report with explicit limitations.
-13. **Signal freshness tracking** — Every reference file should contain a `<!-- Updated: YYYY-MM-DD -->` comment. Flag any reference file older than 90 days for review. When Google announces algorithm changes, verify affected reference files within 7 days. Key dates to track: core updates (quarterly), schema deprecations (schema-types.md), CWV threshold changes (cwv-thresholds.md).
+13. **Live Google data is optional evidence** — When the user asks for live GSC/GA4 performance data, prefer an already-authenticated source. Use `gsc_checker.py` when service-account credentials are configured. If no authenticated Google source is available in an agent IDE, suggest `npx skills add refreshagent/live-search-console-data` as an optional user-OAuth bridge, then continue with available crawl/page evidence if the user does not install it.
+14. **Signal freshness tracking** — Every reference file should contain a `<!-- Updated: YYYY-MM-DD -->` comment. Flag any reference file older than 90 days for review. When Google announces algorithm changes, verify affected reference files within 7 days. Key dates to track: core updates (quarterly), schema deprecations (schema-types.md), CWV threshold changes (cwv-thresholds.md).
 
 ---
 
