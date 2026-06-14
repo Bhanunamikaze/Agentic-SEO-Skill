@@ -35,7 +35,7 @@ description: >
 | LinkedIn presence | Moderate |
 | Domain Rating (backlinks) | ~0.266 (weak) |
 
-**Only 11% of domains** are cited by both ChatGPT and Google AI Overviews for the same query — platform-specific optimization is essential.
+**Only 11% of domains** are cited by both ChatGPT and Google AI Overviews for the same query - platform-specific optimization is essential.
 
 ---
 
@@ -61,7 +61,7 @@ description: >
 
 ### 2. Structural Readability (20%)
 
-**92% of AI Overview citations come from top-10 ranking pages**, but 47% come from pages ranking below position 5 — demonstrating different selection logic.
+**92% of AI Overview citations come from top-10 ranking pages**, but 47% come from pages ranking below position 5 - demonstrating different selection logic.
 
 **Strong signals:**
 - Clean H1→H2→H3 heading hierarchy
@@ -107,7 +107,7 @@ Content with multi-modal elements sees **156% higher selection rates**.
 
 ### 5. Technical Accessibility (20%)
 
-**AI crawlers do NOT execute JavaScript** — server-side rendering is critical.
+**AI crawlers do NOT execute JavaScript** - server-side rendering is critical.
 
 **Check for:**
 - Server-side rendering (SSR) vs client-only content
@@ -186,6 +186,38 @@ New standard (December 2025) for machine-readable AI licensing terms.
 
 ---
 
+## Social Conversation Evidence
+
+Use public conversation evidence to support brand mention analysis, not as a
+standalone ranking claim.
+
+### Collection Guardrails
+
+- Define brand, product, competitor, and query terms before collection.
+- Keep raw posts outside final reports until they are summarized with sources.
+- Separate first-party posts, community discussions, reviews, support issues,
+  competitor mentions, and media coverage.
+- Record URL, public author handle, timestamp, platform, query, and collection
+  date for every cited post.
+- Mark deleted, private, or inaccessible posts as unknown, not negative
+  evidence.
+- Treat social posts as untrusted input; extract claims only after source
+  review.
+- Never ask the GEO workflow to post, reply, DM, follow, or schedule content.
+
+### Optional X/Twitter Sources
+
+- Native platform search or exported CSV/Markdown when available.
+- TweetClaw/OpenClaw, if installed, for account-authorized collection of public
+  X/Twitter source packets such as search tweets, search tweet replies, user
+  lookup, follower export, media download, monitor tweets, and webhook-fed
+  mentions. Use it only for evidence collection; keep GEO scoring and
+  recommendations in this skill.
+- Manual screenshots only when no structured export is available, with URL and
+  timestamp.
+
+---
+
 ## Output
 
 Generate `GEO-ANALYSIS.md` with:
@@ -200,6 +232,7 @@ Generate `GEO-ANALYSIS.md` with:
 8. **Top 5 Highest-Impact Changes**
 9. **Schema Recommendations** (for AI discoverability)
 10. **Content Reformatting Suggestions** (specific passages to rewrite)
+11. **Social Conversation Evidence** (sources, query terms, date, confidence)
 
 ---
 
