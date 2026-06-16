@@ -202,6 +202,7 @@ Reference the quality standards in `resources/references/`:
 - **Core Web Vitals**: Read [cwv-thresholds.md](resources/references/cwv-thresholds.md) for current metric thresholds
 - **E-E-A-T framework**: Read [eeat-framework.md](resources/references/eeat-framework.md) for scoring criteria
 - **Google reference**: Read [google-seo-reference.md](resources/references/google-seo-reference.md) for quick reference
+- **Tourism reference**: Read [tourism-seo-reference.md](resources/references/tourism-seo-reference.md) when planning for tour operators/destination businesses
 - **LLM report rubric**: Read [llm-audit-rubric.md](resources/references/llm-audit-rubric.md) for mandatory evidence format, confidence labels, and output contract
 
 ### Step 6.5 — Verify Findings (All Workflows)
@@ -264,6 +265,7 @@ When running `seo plan`, detect the business type and load the matching template
 |----------|---------------|
 | SaaS / Software | [saas.md](resources/templates/saas.md) |
 | Local Service Business | [local-service.md](resources/templates/local-service.md) |
+| Tour Operator / Tourism | [tour-operator.md](resources/templates/tour-operator.md) |
 | E-commerce / Retail | [ecommerce.md](resources/templates/ecommerce.md) |
 | Publisher / Media | [publisher.md](resources/templates/publisher.md) |
 | Agency / Consultancy | [agency.md](resources/templates/agency.md) |
@@ -272,6 +274,7 @@ When running `seo plan`, detect the business type and load the matching template
 **Detection signals:**
 - SaaS: pricing page, feature pages, /docs, /api, trial/demo CTAs
 - Local: address, phone, Google Business Profile, service area pages
+- Tourism: destination pages, itinerary pages, booking/departure calendar, pickup details, tour packages, traveler FAQs
 - E-commerce: product pages, cart, checkout, /collections, /categories
 - Publisher: article dates, author pages, /news, high content volume
 - Agency: case studies, /work, /portfolio, team pages, service offerings
