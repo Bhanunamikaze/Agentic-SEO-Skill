@@ -1,4 +1,4 @@
-<!-- Updated: 2026-02-07 -->
+<!-- Updated: 2026-08-10 -->
 # Schema.org Types — Status & Recommendations (February 2026)
 
 **Schema.org Version:** 29.4 (December 8, 2025)
@@ -47,9 +47,9 @@ Google's documentation explicitly recommends JSON-LD over Microdata and RDFa.
 
 | Type | Restriction | Since |
 |------|------------|-------|
-| FAQPage | Government and healthcare authority sites ONLY | August 2023 |
+| FAQPage | No rich result for any site; markup still valid | 7 May 2026 |
 
-> Google severely limited FAQ rich results. Only authoritative sources (government, health organizations) now receive FAQ rich results. Do NOT recommend FAQPage schema for commercial sites.
+> Google removed FAQ rich results entirely on 7 May 2026, including for the government and health sites that had kept them after the August 2023 restriction. The `FAQPage` type itself is NOT deprecated and Google's documentation states existing markup can stay. Do not recommend removing it — recommend not expecting a rich result from it.
 
 ---
 

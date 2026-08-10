@@ -43,7 +43,7 @@ See `schema/templates.json` for ready-to-use JSON-LD templates for these types.
 > **JSON-LD and JavaScript rendering:** Per Google's December 2025 JS SEO guidance, structured data injected via JavaScript may face delayed processing. For time-sensitive markup (especially Product, Offer), include JSON-LD in the initial server-rendered HTML.
 
 ### RESTRICTED — only for specific sites:
-- **FAQ**: ONLY for government and healthcare authority sites (restricted Aug 2023)
+- **FAQ**: no rich result for any site since 7 May 2026. The markup is not deprecated — keep it for answer engines, but never claim a rich-result benefit.
 
 ### DEPRECATED — never recommend:
 - **HowTo**: Rich results removed September 2023

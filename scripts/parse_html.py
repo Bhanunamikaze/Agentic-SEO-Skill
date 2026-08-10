@@ -264,7 +264,7 @@ def parse_html(
         "HowTo", "SpecialAnnouncement", "CourseInfo", "EstimatedSalary",
         "LearningVideo", "ClaimReview", "VehicleListing", "PracticeProblems",
     }
-    RESTRICTED_SCHEMA = {"FAQPage"}  # government/healthcare only
+    RESTRICTED_SCHEMA = {"FAQPage"}  # no rich result since 7 May 2026; markup still valid
 
     for script in soup.find_all("script", type="application/ld+json"):
         try:
@@ -294,7 +294,7 @@ def parse_html(
                 note = f"{primary_type} was deprecated/removed from rich results. Remove or replace."
             elif primary_type in RESTRICTED_SCHEMA:
                 status = "restricted"
-                note = f"{primary_type} is restricted to government/healthcare authority sites only."
+                note = f"{primary_type}: FAQPage no longer produces rich results for any site (Google removed them on 7 May 2026). The markup is NOT deprecated and may stay — it still helps answer engines parse the page."
 
             result["schema"].append({
                 "@type": primary_type,
