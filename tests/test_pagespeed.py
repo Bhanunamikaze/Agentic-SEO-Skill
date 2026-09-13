@@ -35,6 +35,9 @@ def test_parse_pagespeed_response_uses_field_data_when_available():
     assert result["field_data_available"] is True
     assert result["metrics"]["LCP"]["value"] == 1800
     assert result["metrics"]["INP"]["rating"] == "fast"
+    # PSI reports CLS as an integer scaled by 100; the parser rescales it so the
+    # value matches CWV_THRESHOLDS and the lab fallback.
+    assert result["metrics"]["CLS"]["value"] == 0.06
     assert result["opportunities"][0]["title"] == "Reduce unused JavaScript"
     assert result["diagnostics"][0]["title"] == "Avoid an excessive DOM size"
 
