@@ -3,7 +3,7 @@
     "metrics": {
       "LARGEST_CONTENTFUL_PAINT_MS": {"percentile": 1800, "category": "FAST"},
       "INTERACTION_TO_NEXT_PAINT": {"percentile": 140, "category": "FAST"},
-      "CUMULATIVE_LAYOUT_SHIFT_SCORE": {"percentile": 0.06, "category": "FAST"},
+      "CUMULATIVE_LAYOUT_SHIFT_SCORE": {"percentile": 6, "category": "FAST"},
       "FIRST_CONTENTFUL_PAINT_MS": {"percentile": 1200, "category": "FAST"},
       "EXPERIMENTAL_TIME_TO_FIRST_BYTE": {"percentile": 650, "category": "FAST"}
     }

@@ -96,6 +96,12 @@ def parse_pagespeed_response(data: dict[str, Any], url: str, strategy: str = "mo
                 percentile = metric_data.get("percentile")
                 category = metric_data.get("category", "").lower()
 
+                # CrUX reports CLS as an integer scaled by 100 (6 means 0.06).
+                # Rescale it so the value matches CWV_THRESHOLDS and the lab
+                # fallback below, which both use the decimal CLS scale.
+                if label == "CLS" and percentile is not None:
+                    percentile = round(percentile / 100, 3)
+
                 thresholds = CWV_THRESHOLDS.get(label, {})
                 result["metrics"][label] = {
                     "value": percentile,
