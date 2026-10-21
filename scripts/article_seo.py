@@ -151,19 +151,33 @@ def extract_content(soup: BeautifulSoup, cms: str) -> dict:
         result["og_description"] = og_desc.get("content", "")
 
     # ── Author ─────────────────────────────────────────────────────────────
-    author_tag = (
-        soup.find(attrs={"class": re.compile(r"author|byline", re.I)})
-        or soup.find("span", itemprop="author")
-        or soup.find("a", rel="author")
+    # Meta tags first: they are unambiguous, whereas a class~=author match can hit a
+    # sidebar widget. JSON-LD last, because it needs parsing.
+    author_meta = (
+        soup.find("meta", attrs={"name": "author"})
+        or soup.find("meta", attrs={"property": "article:author"})
     )
-    if author_tag:
-        result["author"] = author_tag.get_text(strip=True)[:100]
+    if author_meta and author_meta.get("content"):
+        result["author"] = author_meta["content"].strip()[:100]
+    else:
+        author_tag = (
+            soup.find(attrs={"class": re.compile(r"author|byline", re.I)})
+            or soup.find("span", itemprop="author")
+            or soup.find("a", rel="author")
+        )
+        if author_tag:
+            result["author"] = author_tag.get_text(strip=True)[:100]
+        else:
+            result["author"] = _author_from_jsonld(soup)
 
     # ── Publish date ───────────────────────────────────────────────────────
     for sel in [
         {"itemprop": "datePublished"},
-        {"class": re.compile(r"published|post-date|entry-date", re.I)},
+        # OpenGraph emits `property=`, not `name=`, so the name-based selector below
+        # can never match on a standards-compliant page.
+        {"property": "article:published_time"},
         {"name": "article:published_time"},
+        {"class": re.compile(r"published|post-date|entry-date", re.I)},
     ]:
         date_tag = soup.find(attrs=sel) if isinstance(sel, dict) else None
         if date_tag:
@@ -171,6 +185,12 @@ def extract_content(soup: BeautifulSoup, cms: str) -> dict:
                 date_tag.get("content") or date_tag.get("datetime") or date_tag.get_text(strip=True)
             )[:50]
             break
+    if not result["publish_date"]:
+        time_tag = soup.find("time", attrs={"datetime": True})
+        if time_tag:
+            result["publish_date"] = time_tag["datetime"][:50]
+    if not result["publish_date"]:
+        result["publish_date"] = _jsonld_field(soup, "datePublished")[:50]
 
     # ── CMS-specific body container ────────────────────────────────────────
     body_container = None
@@ -250,6 +270,48 @@ def extract_content(soup: BeautifulSoup, cms: str) -> dict:
 # ---------------------------------------------------------------------------
 # JSON-LD structured data extraction
 # ---------------------------------------------------------------------------
+
+def _iter_jsonld(soup: BeautifulSoup):
+    """Yield every JSON-LD object on the page, flattening @graph and top-level lists."""
+    for script in soup.find_all("script", type="application/ld+json"):
+        try:
+            data = json.loads((script.string or "").strip())
+        except (json.JSONDecodeError, AttributeError):
+            continue
+        stack = data if isinstance(data, list) else [data]
+        while stack:
+            node = stack.pop()
+            if not isinstance(node, dict):
+                continue
+            graph = node.get("@graph")
+            if isinstance(graph, list):
+                stack.extend(graph)
+            yield node
+
+
+def _jsonld_field(soup: BeautifulSoup, field: str) -> str:
+    """First non-empty string value of `field` across all JSON-LD nodes."""
+    for node in _iter_jsonld(soup):
+        value = node.get(field)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return ""
+
+
+def _author_from_jsonld(soup: BeautifulSoup) -> str:
+    """Author name from JSON-LD, whether it is a string, an object, or a list of either."""
+    for node in _iter_jsonld(soup):
+        author = node.get("author")
+        if isinstance(author, list):
+            author = author[0] if author else None
+        if isinstance(author, dict):
+            name = author.get("name")
+            if isinstance(name, str) and name.strip():
+                return name.strip()[:100]
+        elif isinstance(author, str) and author.strip():
+            return author.strip()[:100]
+    return ""
+
 
 def extract_structured_data(soup: BeautifulSoup) -> list:
     """
