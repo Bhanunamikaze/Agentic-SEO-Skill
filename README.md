@@ -130,13 +130,14 @@ The rubric standardizes:
 - Schema.org types — active, restricted, deprecated
 - Content quality gates & word count minimums
 - Google SEO quick reference
+- Tourism/tour-operator SEO reference
 - LLM audit rubric for consistent outputs
 
 Each reference file carries its own `<!-- Updated: YYYY-MM-DD -->` marker. CI checks those markers with `scripts/reference_freshness.py` and flags stale references for review.
 
 ## 🏭 Industry Templates
 
-Pre-built strategy templates for: **SaaS**, **E-commerce**, **Local Business**, **Publisher/Media**, **Agency**, and **Generic** businesses.
+Pre-built strategy templates for: **SaaS**, **E-commerce**, **Local Business**, **Tour Operators/Tourism**, **Publisher/Media**, **Agency**, and **Generic** businesses.
 
 ---
 

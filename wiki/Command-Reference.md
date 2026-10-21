@@ -36,3 +36,10 @@ Treat it as a single-URL full audit and produce:
 
 If the HTML generator runs, also return the saved `SEO-REPORT.html` path.
 
+## `seo plan` Industry Routing Examples
+
+Use `seo plan <topic-or-url>` and route by detected business model:
+
+- `seo plan https://example-tours.com` → Tour Operator / Tourism template (`resources/templates/tour-operator.md`)
+- `seo plan https://example-plumber.com` → Local Service template (`resources/templates/local-service.md`)
+- `seo plan https://example-saas.com` → SaaS template (`resources/templates/saas.md`)

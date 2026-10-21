@@ -17,7 +17,7 @@ Agentic SEO Skill is an LLM-first SEO audit toolkit for agent IDEs and AI coding
 |---|---|---|
 | Install the skill | [[Installation]] | Target-specific install commands for Codex, Claude, Cursor, Windsurf, Copilot, Cline, Continue, and Antigravity. |
 | Learn the commands | [[Command Reference]] | The `seo audit`, `seo page`, `seo technical`, `seo schema`, `seo github`, and related command map. |
-| Copy a complete prompt | [[Example Prompts]] | Detailed prompts for full audits, articles, technical SEO, schema, GEO/AEO, local SEO, ecommerce, and GitHub SEO. |
+| Copy a complete prompt | [[Example Prompts]] | Detailed prompts for full audits, articles, technical SEO, schema, GEO/AEO, local SEO, tour-operator strategy, ecommerce, and GitHub SEO. |
 | Understand the audit flow | [[Audit Workflow]] | How evidence is collected, scored, verified, and turned into findings. |
 | Generate reports | [[Reports and Outputs]] | Markdown reports, action plans, HTML dashboards, GitHub SEO reports, and report QA guidance. |
 | Find a script | [[Script Inventory]] | Start-here script groups plus the full 89-script inventory. |
@@ -64,6 +64,7 @@ Example dashboard snapshot:
 | If you need... | Use this workflow | Primary outputs |
 |---|---|---|
 | A complete website audit | `seo audit <url>` | `FULL-AUDIT-REPORT.md`, `ACTION-PLAN.md`, optional `SEO-REPORT.html` |
+| A tour operator growth plan | `seo plan <topic-or-url>` | Industry-routed strategy using the Tour Operator / Tourism template |
 | A homepage or landing-page review | `seo page <url>` | Page-level findings and prioritized fixes |
 | Technical crawl/indexability checks | `seo technical <url>` | Robots, sitemap, canonical, redirect, indexability, and status findings |
 | Article optimization | `seo article <url>` | Content gaps, E-E-A-T issues, schema fixes, snippet opportunities |
@@ -119,4 +120,3 @@ The repo validates:
 - Focused regression tests for audit behavior
 
 Reference files carry `<!-- Updated: YYYY-MM-DD -->` markers. Stale references are flagged for review so SEO rules and assumptions do not silently age out.
-

@@ -284,6 +284,29 @@ Output:
 - Suggest category copy sections that improve uniqueness without hurting UX.
 ```
 
+## Tour Operator / Tourism SEO Strategy
+
+Use this for tour companies, excursion operators, private guide businesses, and destination-focused travel operators.
+
+```text
+Create a strategic SEO plan for this tour operator: <url-or-business-name>.
+
+Business model: <day tours/multi-day packages/private tours/mixed>
+Primary destinations: <destination list>
+Core activities: <activity list>
+
+Plan for:
+- Destination hub architecture, tour pages, itinerary pages, availability/departure pages, pickup-location pages, and policy pages.
+- Seasonal demand planning with pre-peak publishing windows.
+- Conversion-critical page requirements (inclusions, exclusions, pricing, pickup, cancellation, safety, FAQs).
+- Schema/entity recommendations for tour pages and operator trust signals.
+
+Output:
+- Recommend the top 20 pages to build or upgrade first.
+- Provide a 90-day implementation roadmap with priorities by impact and effort.
+- Include KPI targets for organic bookings, inquiry rate, and destination-query visibility.
+```
+
 ## GitHub Repository SEO
 
 Use this for repository discoverability on GitHub and search engines.
@@ -349,4 +372,3 @@ Rules:
 - Do not mark a finding Confirmed unless the evidence directly supports it.
 - Prioritize fixes that affect crawlability, indexability, CWV, trust, and conversion.
 ```
-

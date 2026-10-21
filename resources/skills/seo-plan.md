@@ -83,6 +83,17 @@ description: >
 | SaaS | Product Documentation | Getting Started, API Reference, Integrations, Troubleshooting, Best Practices, Migration |
 | E-commerce | Product Category | Buying Guide, Comparison, Care Guide, Reviews, FAQ, Accessories |
 | Local Service | Service Area | City-specific pages, Service FAQ, Pricing, Before/After, Testimonials |
+| Tour Operator / Tourism | Destination Hub | Best Tours by Destination, Itineraries by Duration, Seasonal Travel Windows, Pickup Logistics, Cancellation FAQs, Activity Comparisons |
+
+#### Tourism Seasonality and Destination Planning
+
+For tour operators and tourism businesses:
+
+- Build destination hubs first, then expand by activity type and itinerary length.
+- Plan content release around booking lead times and season demand windows.
+- Keep departure/availability pages accurate and separate from evergreen guides.
+- Prioritize conversion-critical content: inclusions, logistics, pickup info, and cancellation terms.
+- Cross-reference `resources/references/tourism-seo-reference.md` for practical tour-operator requirements.
 
 ### 5. Technical Foundation
 - Hosting and performance requirements
@@ -122,6 +133,7 @@ description: >
 Load from `resources/templates/`:
 - `saas.md` — SaaS/software companies
 - `local-service.md` — Local service businesses
+- `tour-operator.md` — Tour operators and tourism experience businesses
 - `ecommerce.md` — E-commerce stores
 - `publisher.md` — Content publishers/media
 - `agency.md` — Agencies and consultancies
@@ -152,4 +164,3 @@ Load from `resources/templates/`:
 - Resource requirements defined
 - Dependencies identified
 - Risk mitigation strategies
-
