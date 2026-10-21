@@ -23,7 +23,7 @@ DEPRECATED_TYPES = {
 }
 
 RESTRICTED_TYPES = {
-    "FAQPage": "eligible mainly for authoritative government and health sites",
+    "FAQPage": "no longer shown as a rich result for any site (7 May 2026); markup still valid",
     "HowTo": "no longer broadly shown as a Google rich result",
 }
 

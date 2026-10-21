@@ -1,4 +1,4 @@
-<!-- Updated: 2026-02-07 -->
+<!-- Updated: 2026-08-10 -->
 # Google SEO Quick Reference (February 2026)
 
 Concise reference guide for subagents. Summarizes key Google Search concepts,
@@ -99,7 +99,7 @@ Measured at the 75th percentile of real user data (field data).
 
 ### Deprecated/Restricted Types (as of Feb 2026)
 - **HowTo**: Rich results removed (September 2023)
-- **FAQ**: Restricted to government and healthcare authority sites (August 2023)
+- **FAQ**: No rich result for any site since 7 May 2026 (this supersedes the August 2023 restriction). Markup remains valid and may stay.
 - **SpecialAnnouncement**: Deprecated (July 31, 2025)
 - **CourseInfo, EstimatedSalary, LearningVideo**: Retired (June 2025)
 - **ClaimReview**: Retired (June 2025)

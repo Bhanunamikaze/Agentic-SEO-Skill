@@ -61,7 +61,7 @@ DEPRECATED_SCHEMA = {
     "HowTo", "SpecialAnnouncement", "CourseInfo", "EstimatedSalary",
     "LearningVideo", "ClaimReview", "VehicleListing", "PracticeProblems",
 }
-RESTRICTED_SCHEMA = {"FAQPage"}  # government / healthcare only
+RESTRICTED_SCHEMA = {"FAQPage"}  # no rich result since 7 May 2026; markup still valid
 
 
 # ---------------------------------------------------------------------------
@@ -274,7 +274,7 @@ def extract_structured_data(soup: BeautifulSoup) -> list:
             note = f"{schema_type} was deprecated/removed from rich results. Remove or replace."
         elif schema_type in RESTRICTED_SCHEMA:
             status = "restricted"
-            note = f"{schema_type} is restricted to government/healthcare authority sites only."
+            note = f"{schema_type}: FAQPage no longer produces rich results for any site (Google removed them on 7 May 2026). The markup is NOT deprecated and may stay — it still helps answer engines parse the page."
 
         blocks.append({
             "@type": schema_type,
@@ -495,7 +495,7 @@ def detect_seo_issues(content: dict, structured_data: list, readability: dict) -
             if sd.get("status") == "deprecated":
                 issues.append({"severity": "Critical", "area": "Schema", "finding": sd["note"], "fix": "Remove deprecated schema type immediately."})
             elif sd.get("status") == "restricted":
-                issues.append({"severity": "Warning", "area": "Schema", "finding": sd["note"], "fix": "Remove FAQPage schema unless you are a government or healthcare authority site."})
+                issues.append({"severity": "Warning", "area": "Schema", "finding": sd["note"], "fix": "No action needed. Keep the markup; just do not expect a rich result."})
 
     # Readability
     fre = readability.get("flesch_reading_ease")
