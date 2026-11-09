@@ -80,7 +80,7 @@ OK: documented inventory matches files on disk.
 | `indexability_matrix.py` | Produce per-URL indexability verdicts from status, robots, meta robots, x-robots, canonical, and sitemap signals. |
 | `indexnow_checker.py` | Validate and optionally ping IndexNow configuration. |
 | `internal_links.py` | Analyze internal link structure, anchors, depth, and orphan-page candidates. |
-| `javascript_render_audit.py` | Compare raw HTML and rendered DOM SEO signals when Playwright rendering is available. |
+| `javascript_render_audit.py` | Compare raw HTML and rendered DOM SEO signals when Playwright rendering is available, or through the Firecrawl API with `--renderer firecrawl`. |
 | `lcp_subparts.py` | Break down LCP risk into TTFB, resource delay, resource duration, and render delay signals. |
 | `lighthouse_runner.py` | Run local Lighthouse when available and return structured performance, SEO, accessibility, and best-practice scores. |
 | `link_profile.py` | Build internal/external link profile evidence and optional GSC link data. |

@@ -507,6 +507,7 @@ $EDITOR .env   # add PAGESPEED_API_KEY, GITHUB_TOKEN, GSC_CREDENTIALS_PATH, etc.
 | `GOOGLE_KG_API_KEY` | `entity_checker.py` | Same console → enable "Knowledge Graph Search API" |
 | `GITHUB_TOKEN` *(or `GH_TOKEN`)* | All `github_*.py` scripts | A PAT with `public_repo` is enough; `gh auth login` works as a fallback |
 | `GSC_CREDENTIALS_PATH` | `gsc_checker.py`, `link_profile.py` | Path to a Google service-account JSON with Search Console access |
+| `FIRECRAWL_API_KEY` | `javascript_render_audit.py` | [Firecrawl](https://www.firecrawl.dev/?utm_source=agentic-seo-skill&utm_medium=integration) API key for `--renderer firecrawl`, which sends the audited URL to the Firecrawl API to render the page |
 
 ```bash
 # GitHub auth setup for repository SEO scripts (choose one)

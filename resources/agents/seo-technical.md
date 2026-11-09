@@ -25,6 +25,7 @@ Run these scripts from `<SKILL_DIR>/scripts/` to collect evidence:
 | `hreflang_checker.py` | International SEO validation | `python3 hreflang_checker.py <url> --json` |
 | `indexnow_checker.py` | IndexNow implementation check | `python3 indexnow_checker.py <url> --key <key> --json` |
 | `duplicate_content.py` | Near-duplicate & thin content detection | `python3 duplicate_content.py <url> --json` |
+| `javascript_render_audit.py` | Raw HTML vs rendered DOM (Playwright; `--renderer firecrawl` uses the Firecrawl API) | `python3 javascript_render_audit.py <url> --json` |
 
 ## Core Web Vitals Reference
 
