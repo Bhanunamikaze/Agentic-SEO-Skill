@@ -133,10 +133,15 @@ python3 <SKILL_DIR>/scripts/internal_links.py <url> --depth 1 --max-pages 20
 # Extract article content and perform keyword research for LLM-driven optimization
 python3 <SKILL_DIR>/scripts/article_seo.py <url> --keyword "<optional_target_keyword>" --json
 
-# Credentials for paid/auth APIs (PageSpeed, GitHub, GSC, Knowledge Graph)
+# Credentials for paid/auth APIs (PageSpeed, GitHub, GSC, Knowledge Graph,
+# Firecrawl)
 # are loaded from CLI flags, then env vars, then a `.env` file in the repo
 # root / cwd / `~/.agentic-seo/.env`. Copy `.env.example` to `.env` and fill
 # in only the keys you have. Never paste secrets in prompts.
+
+# Compare raw HTML with the rendered DOM (Playwright by default;
+# --renderer firecrawl sends the URL to the Firecrawl API, needs FIRECRAWL_API_KEY)
+python3 <SKILL_DIR>/scripts/javascript_render_audit.py <url> --json
 
 # GitHub repository SEO (provider fallback: auto|api|gh)
 # Auth setup (choose one):
